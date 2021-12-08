@@ -1,0 +1,6 @@
+.idea
+model
+data
+
+*.ipynb
+!Correct_Training.ipynb
