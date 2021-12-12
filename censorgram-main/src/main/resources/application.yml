@@ -1,0 +1,25 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${DB_NAME:censorgram}
+    username: ${DB_USER:postgres}
+    password: ${DB_PASS:postgres}
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+    database: postgresql
+    hibernate:
+      ddl-auto: validate
+  flyway:
+    baseline-on-migrate: true
+    table: tp_schema_information
+  mvc.hiddenmethod.filter.enabled: true
+
+logging.level.org.flywaydb: debug
+logging.level.org.springframework.security: debug
+
+
+moderator:
+  base-url: ${MODERATOR_BASE_URL:http://localhost:5000/moderator}
+  api.inspect: /inspect
+  confidence-limit: 0.95
