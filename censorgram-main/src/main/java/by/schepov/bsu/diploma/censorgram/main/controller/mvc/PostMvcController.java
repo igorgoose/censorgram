@@ -1,4 +1,4 @@
-package by.schepov.bsu.diploma.censorgram.main.controller;
+package by.schepov.bsu.diploma.censorgram.main.controller.mvc;
 
 import by.schepov.bsu.diploma.censorgram.main.service.PostService;
 import lombok.RequiredArgsConstructor;
@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequiredArgsConstructor
 @Controller
 @RequestMapping("/posts")
-public class PostController {
+public class PostMvcController {
     private final PostService postService;
 
     @GetMapping("/my")

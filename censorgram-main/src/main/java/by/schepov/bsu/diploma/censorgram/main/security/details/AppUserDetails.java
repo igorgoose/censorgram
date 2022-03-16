@@ -1,4 +1,4 @@
-package by.schepov.bsu.diploma.censorgram.main.security;
+package by.schepov.bsu.diploma.censorgram.main.security.details;
 
 import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;

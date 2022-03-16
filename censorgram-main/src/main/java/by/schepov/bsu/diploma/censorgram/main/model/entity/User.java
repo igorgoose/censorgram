@@ -2,6 +2,7 @@ package by.schepov.bsu.diploma.censorgram.main.model.entity;
 
 import lombok.Data;
 import lombok.experimental.Accessors;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -19,6 +20,7 @@ public class User {
     private String username;
     private String password;
     private String email;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate dob;
     private LocalDate registerDate;
     @ManyToOne

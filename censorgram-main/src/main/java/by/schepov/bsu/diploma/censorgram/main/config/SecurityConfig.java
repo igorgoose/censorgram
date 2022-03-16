@@ -1,6 +1,5 @@
 package by.schepov.bsu.diploma.censorgram.main.config;
 
-import by.schepov.bsu.diploma.censorgram.main.model.entity.Role;
 import by.schepov.bsu.diploma.censorgram.main.repository.UserRepository;
 import by.schepov.bsu.diploma.censorgram.main.service.UserService;
 import by.schepov.bsu.diploma.censorgram.main.service.impl.UserServiceImpl;
@@ -36,7 +35,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
-                .loginPage("/login")
+                .loginProcessingUrl("/login")
                 .permitAll()
                 .and()
                 .logout()

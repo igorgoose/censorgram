@@ -1,4 +1,4 @@
-package by.schepov.bsu.diploma.censorgram.main.controller;
+package by.schepov.bsu.diploma.censorgram.main.controller.mvc;
 
 import by.schepov.bsu.diploma.censorgram.main.model.entity.Role;
 import by.schepov.bsu.diploma.censorgram.main.model.entity.User;
@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 @Controller
 @RequestMapping("/users")
 @AllArgsConstructor
-public class UserController {
+public class UserMvcController {
     private final UserService userService;
 
     @GetMapping("/{id}/edit")

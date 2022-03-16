@@ -1,8 +1,8 @@
 package by.schepov.bsu.diploma.censorgram.main.service.impl;
 
+import by.schepov.bsu.diploma.censorgram.main.mapper.PostMapper;
 import by.schepov.bsu.diploma.censorgram.main.model.dto.ModeratorResponseDto;
 import by.schepov.bsu.diploma.censorgram.main.model.dto.PostDto;
-import by.schepov.bsu.diploma.censorgram.main.model.dto.UserIdDto;
 import by.schepov.bsu.diploma.censorgram.main.model.entity.Post;
 import by.schepov.bsu.diploma.censorgram.main.model.entity.PostAnalytics;
 import by.schepov.bsu.diploma.censorgram.main.model.entity.PostStatus;
@@ -15,6 +15,8 @@ import by.schepov.bsu.diploma.censorgram.main.service.PostService;
 import by.schepov.bsu.diploma.censorgram.main.util.SecurityUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -30,18 +32,23 @@ public class PostServiceImpl implements PostService {
     private final ModeratorService moderatorService;
     private final PostAnalyticsRepository postAnalyticsRepository;
     private final PostStatusRepository postStatusRepository;
+    private final PostMapper postMapper;
     @Value("${moderator.confidence-limit}")
     private double confidenceLimit;
 
     @Override
     public List<PostDto> getMyPosts() {
         Long userId = SecurityUtils.getCurrentUserId();
-        return postRepository.findByUserIdOrderByUpdatedDateDescCreatedDateDesc(userId).stream().map(p -> new PostDto()
-                .setId(p.getId())
-                .setStatus(p.getStatus())
-                .setUser(new UserIdDto().setId(p.getUser().getId()).setUsername(p.getUser().getUsername()))
-                .setText(p.getText())
-                .setCreatedDate(p.getCreatedDate())).collect(Collectors.toList());
+        return postRepository.findByUserIdOrderByUpdatedDateDescCreatedDateDesc(userId).stream()
+                             .map(postMapper::postToDto)
+                             .collect(Collectors.toList());
+    }
+
+    @Override
+    public Page<PostDto> getMyPosts(Pageable pageable) {
+        Long userId = SecurityUtils.getCurrentUserId();
+        return postRepository.findByUserIdOrderByUpdatedDateDescCreatedDateDesc(userId, pageable)
+                             .map(postMapper::postToDto);
     }
 
     @Transactional

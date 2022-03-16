@@ -1,6 +1,6 @@
 package by.schepov.bsu.diploma.censorgram.main.util;
 
-import by.schepov.bsu.diploma.censorgram.main.security.AppUserDetails;
+import by.schepov.bsu.diploma.censorgram.main.security.details.AppUserDetails;
 import lombok.experimental.UtilityClass;
 import org.springframework.security.core.context.SecurityContextHolder;
 

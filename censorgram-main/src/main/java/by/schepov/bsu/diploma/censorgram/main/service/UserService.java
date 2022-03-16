@@ -9,4 +9,8 @@ import javax.transaction.Transactional;
 public interface UserService extends UserDetailsService {
     @Transactional
     User registerUser(SignUpRequestDto userDto);
+
+    User getById(Long id);
+
+    void updateUser(User user);
 }
