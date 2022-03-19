@@ -1,0 +1,24 @@
+.loader {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    position: fixed;
+    top: calc(50% - 25px);
+    left: calc(50% - 25px);
+    animation: extend 1s infinite ease-in-out;
+}
+
+@keyframes extend {
+    0% {
+        transform: scale(1);
+        background: #9cdebc;
+    }
+    50% {
+        transform: scale(0.5);
+        background: #61dafb;
+    }
+    100% {
+        transform: scale(1);
+        background: #9cdebc;
+    }
+}

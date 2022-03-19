@@ -1,0 +1,10 @@
+.mainBtn {
+    margin-top: 10px;
+    background-color: aliceblue;
+    cursor: pointer;
+    border: 1px solid rgba(0, 0, 0, 0.3);
+}
+
+.selected {
+    background-color: #9cdebc;
+}

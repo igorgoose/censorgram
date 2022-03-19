@@ -1,0 +1,34 @@
+.Posts {
+    width: 800px;
+}
+
+.post {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 1px solid #59b485;
+    padding: 1em;
+    margin-top: 15px;
+}
+
+.post-content {
+    padding: 4px;
+}
+.post-enter {
+    opacity: 0;
+    transform: translateX(-500px);
+}
+.post-enter-active {
+    opacity: 1;
+    transform: translateX(0px);
+    transition: all 500ms ease-in;
+}
+.post-exit {
+    opacity: 1;
+}
+
+.post-exit-active {
+    opacity: 0;
+    transform: translateX(-500px);
+    transition: all 500ms ease-in;
+}
