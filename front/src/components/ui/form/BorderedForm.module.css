@@ -1,0 +1,8 @@
+.borderedForm {
+    border: 1px solid #9cdebc;
+    border-radius: 10px;
+}
+
+.borderedForm.colored {
+    background: linear-gradient(rgba(156, 222, 188, 0.20), rgba(97, 218, 251, 0.20));
+}

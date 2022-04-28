@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @RequiredArgsConstructor
-@Controller
+//@Controller
 @RequestMapping("/posts")
 public class PostMvcController {
     private final PostService postService;

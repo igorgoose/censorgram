@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import FormInput from "./ui/input/FormInput";
 import MainButton from "./ui/button/MainButton";
+import SimpleForm from "./ui/form/SimpleForm";
 
 const PostForm = ({create}) => {
     const [post, setPost] = useState({
@@ -15,7 +16,7 @@ const PostForm = ({create}) => {
     }
 
     return (
-        <form>
+        <SimpleForm>
             <FormInput
                 value={post.title}
                 onChange={e => setPost({...post, title: e.target.value})}
@@ -27,7 +28,7 @@ const PostForm = ({create}) => {
                 type="text"
                 placeholder="Body"/>
             <MainButton onClick={addPost}>Create post</MainButton>
-        </form>
+        </SimpleForm>
     );
 };
 

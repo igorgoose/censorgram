@@ -4,3 +4,8 @@
     flex-wrap: wrap;
     margin-bottom: 20px;
 }
+
+.pageNumbers > * {
+    margin: 0 3px;
+    flex-grow: 1;
+}

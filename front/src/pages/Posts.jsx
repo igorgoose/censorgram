@@ -1,16 +1,16 @@
-import React, {useEffect, useState} from "react";
+import React, {useContext, useEffect, useRef, useState} from "react";
 import {usePosts} from "../hooks/usePosts";
 import useFetch from "../hooks/useFetch";
 import PostService from "../api/PostService";
-import {calculateTotalPages} from "../utils/pages";
 import MainButton from "../components/ui/button/MainButton";
 import PostModal from "../components/ui/modal/PostModal";
 import PostForm from "../components/PostForm";
 import PostFilter from "../components/PostFilter";
 import Loader from "../components/ui/loader/Loader";
 import PostList from "../components/PostList";
-import Pagination from "../components/ui/pagination/Pagination";
 import '../styles/posts.css';
+import useLoadObserver from "../hooks/useLoadObserver";
+import {AuthContext} from "../context/authContext";
 
 function Posts() {
     const [posts, setPosts] = useState([]);
@@ -18,17 +18,34 @@ function Posts() {
         sort: '',
         search: ''
     });
+    const {setAuthorized} = useContext(AuthContext);
     const [modalVisible, setModalVisible] = useState(false);
     const [totalPages, setTotalPages] = useState(0)
     const [currentPage, setCurrentPage] = useState(1)
-    const [pageSize, setPageSize] = useState(5)
+    const [pageSize] = useState(20)
     const filteredPosts = usePosts(posts, filter.sort, filter.search);
     const [fetchPosts, postsLoading, fetchPostsError] = useFetch(async () => {
-        const response = await PostService.getPage(currentPage, pageSize);
-        console.log(response);
-        setPosts(response.data);
-        setTotalPages(calculateTotalPages(parseInt(response.headers["x-total-count"]), pageSize));
+        try {
+            console.log("fetching posts")
+            const response = await PostService.getMyPostsPage(currentPage, pageSize);
+            console.log("response", response);
+            setPosts([...posts, ...response.data.content]);
+            setTotalPages(response.data.totalPages);
+        } catch (e) {
+            console.log(e)
+            console.log({...e})
+            if (!e.response || e.response.status === 401) {
+                setAuthorized(false);
+                localStorage.removeItem("auth");
+            }
+        }
     })
+    const loadIndicatorRef = useRef();
+
+    useLoadObserver(postsLoading, loadIndicatorRef, currentPage >= totalPages, () => {
+        setCurrentPage(currentPage + 1);
+    });
+
     useEffect(() => fetchPosts(), [currentPage]);
 
     function addPost(post) {
@@ -51,15 +68,15 @@ function Posts() {
                 </MainButton>
                 <PostFilter filter={filter} setFilter={setFilter}/>
             </div>
-            {fetchPostsError ?
-                <h1>Error fetching posts: {fetchPostsError}</h1>
-                :
-                postsLoading ?
-                    <Loader/>
+            <PostList loadIndicatorRef={loadIndicatorRef} removePost={removePost} posts={filteredPosts}
+                      title={"Your Posts"}/>
+            <div>
+                {fetchPostsError ?
+                    <h3>Error fetching posts: {fetchPostsError.message}</h3>
                     :
-                    <PostList removePost={removePost} posts={filteredPosts} title={"Your Posts"}/>
-            }
-            <Pagination currentPage={currentPage} setCurrentPage={setCurrentPage} totalPages={totalPages}/>
+                    postsLoading && <Loader/>
+                }
+            </div>
         </div>
     );
 }

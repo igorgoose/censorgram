@@ -1,17 +1,25 @@
 .navbar {
     width: 100vw;
-    background: rgb(230, 230, 230);
+    background: linear-gradient(45deg, rgba(134, 229, 181, 0.25), rgba(76, 212, 250, 0.25));
     display: flex;
-    margin-left: auto;
-    padding: 0 10px;
+    padding: 0 15px;
+    margin-bottom: 20px;
 }
 
 .navbar__links {
     margin-left: auto;
     display: flex;
+    align-items: center;
 }
 
 .navbar__link {
     margin-left: 10px;
     cursor: pointer;
+    text-decoration: none;
+    color: black;
+}
+
+.navbar__link:hover {
+    text-decoration: none;
+    color: #2930e5
 }

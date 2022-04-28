@@ -1,19 +1,18 @@
-import React from 'react';
+import React, {useState} from 'react';
 import MainButton from "./ui/button/MainButton";
 import {useNavigate} from "react-router-dom";
 
 const PostItem = ({removePost, post}) => {
-    let navigate = useNavigate();
-    console.log(post)
+    const navigate = useNavigate();
 
     return (
-        <div className="post">
+        <div className="post" style={{backgroundColor: `#${post.status.color}`}}>
             <div className="post-content">
-                <strong>{post.title}</strong>
-                <div>{post.body}</div>
+                <strong>{post.user.username}</strong>
+                <div>{post.text}</div>
             </div>
             <MainButton
-                style={{marginRight: "5px"}}
+                style={{marginLeft: "auto", marginRight: "5px"}}
                 onClick={() => navigate(`/posts/${post.id}`)}>
                 Open
             </MainButton>

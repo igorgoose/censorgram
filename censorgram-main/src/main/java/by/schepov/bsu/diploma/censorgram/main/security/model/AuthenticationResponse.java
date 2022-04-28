@@ -18,8 +18,6 @@ import java.io.Serializable;
 @AllArgsConstructor
 @NoArgsConstructor
 public class AuthenticationResponse implements Serializable {
-
     private String redirectPath;
     private String message;
-
 }

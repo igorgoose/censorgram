@@ -2,7 +2,7 @@ import React from 'react';
 import PostItem from "./PostItem";
 import {CSSTransition, TransitionGroup} from "react-transition-group";
 
-const PostList = ({removePost, posts, title}) => {
+const PostList = ({loadIndicatorRef, removePost, posts, title}) => {
     if (posts.length === 0) {
         return (
             <div>
@@ -21,6 +21,7 @@ const PostList = ({removePost, posts, title}) => {
                     </CSSTransition>
                 )}
             </TransitionGroup>
+            <span ref={loadIndicatorRef}/>
         </div>
     );
 };

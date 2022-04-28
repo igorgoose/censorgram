@@ -4,10 +4,10 @@ export const useSortedPosts = (posts, sort) => {
     return useMemo(() => {
         console.log(sort)
         switch (sort) {
-            case "title":
-                return [...posts].sort((p1, p2) => p1.title.localeCompare(p2.title))
-            case "body":
-                return [...posts].sort((p1, p2) => p1.body.localeCompare(p2.body))
+            case "username":
+                return [...posts].sort((p1, p2) => p1.user.username.localeCompare(p2.user.username))
+            case "text":
+                return [...posts].sort((p1, p2) => p1.text.localeCompare(p2.text))
             default:
                 return posts
         }
@@ -17,6 +17,6 @@ export const useSortedPosts = (posts, sort) => {
 export const usePosts = (posts, sort, search) => {
     const sortedPosts = useSortedPosts(posts, sort)
     return useMemo(() => {
-        return [...sortedPosts].filter(p => p.title.toLowerCase().includes(search.toLowerCase()))
+        return [...sortedPosts].filter(p => p.user.username.toLowerCase().includes(search.toLowerCase()));
     }, [search, sortedPosts])
 }
