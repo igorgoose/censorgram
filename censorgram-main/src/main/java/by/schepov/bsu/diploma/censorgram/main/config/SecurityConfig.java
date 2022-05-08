@@ -56,9 +56,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionAuthenticationFailureHandler(customAuthenticationFailureHandler)
                 .and()
                 .exceptionHandling()
-                .authenticationEntryPoint((request, response, authException) -> {
-                    response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                });
+                .authenticationEntryPoint((request, response, authException) -> response.setStatus(HttpServletResponse.SC_UNAUTHORIZED));
     }
 
     @Bean

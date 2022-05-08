@@ -11,5 +11,5 @@ public interface PostService {
 
     Page<PostDto> getMyPosts(Pageable pageable);
 
-    void createPost(String text);
+    PostDto createPost(String text);
 }

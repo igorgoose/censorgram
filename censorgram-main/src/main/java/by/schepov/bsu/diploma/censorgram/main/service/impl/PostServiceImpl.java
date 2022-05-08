@@ -10,6 +10,7 @@ import by.schepov.bsu.diploma.censorgram.main.model.entity.User;
 import by.schepov.bsu.diploma.censorgram.main.repository.PostAnalyticsRepository;
 import by.schepov.bsu.diploma.censorgram.main.repository.PostRepository;
 import by.schepov.bsu.diploma.censorgram.main.repository.PostStatusRepository;
+import by.schepov.bsu.diploma.censorgram.main.repository.UserRepository;
 import by.schepov.bsu.diploma.censorgram.main.service.ModeratorService;
 import by.schepov.bsu.diploma.censorgram.main.service.PostService;
 import by.schepov.bsu.diploma.censorgram.main.util.SecurityUtils;
@@ -33,6 +34,7 @@ public class PostServiceImpl implements PostService {
     private final PostAnalyticsRepository postAnalyticsRepository;
     private final PostStatusRepository postStatusRepository;
     private final PostMapper postMapper;
+    private final UserRepository userRepository;
     @Value("${moderator.confidence-limit}")
     private double confidenceLimit;
 
@@ -53,14 +55,14 @@ public class PostServiceImpl implements PostService {
 
     @Transactional
     @Override
-    public void createPost(String text) {
+    public PostDto createPost(String text) {
         UUID uuid = UUID.randomUUID();
         ModeratorResponseDto moderatorResponseDto = moderatorService.inspectText(uuid, text);
         Post post = new Post()
                 .setId(uuid)
                 .setText(text)
                 .setCreatedDate(LocalDateTime.now())
-                .setUser(new User().setId(SecurityUtils.getCurrentUserId()))
+                .setUser(userRepository.getById(SecurityUtils.getCurrentUserId()))
                 .setStatus(resolveStatusByModeratorResult(moderatorResponseDto));
         postRepository.save(post);
         PostAnalytics postAnalytics = new PostAnalytics()
@@ -69,6 +71,7 @@ public class PostServiceImpl implements PostService {
                 .setProbability(moderatorResponseDto.getProbability())
                 .setToxic(moderatorResponseDto.getInappropriate());
         postAnalyticsRepository.save(postAnalytics);
+        return postMapper.postToDto(post);
     }
 
     private PostStatus resolveStatusByModeratorResult(ModeratorResponseDto moderatorResponseDto) {
