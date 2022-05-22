@@ -1,7 +1,4 @@
 from typing import Tuple
-
-from pandas import Series
-
 from funcs.functions import get_metrics, compute_metrics
 from transformers import BertTokenizer, BertForSequenceClassification, TrainingArguments
 from transformers import Trainer
@@ -15,13 +12,11 @@ model_name = 'DeepPavlov/rubert-base-cased-conversational'
 tokenizer = BertTokenizer.from_pretrained(model_name)
 model = BertForSequenceClassification.from_pretrained(model_name)
 
-data = pd.read_csv("C:\\Users\\Igor\\Desktop\\diplom\\summarizer\\data\\train.csv")
-data_eval = pd.read_csv("C:\\Users\\Igor\\Desktop\\diplom\\summarizer\\data\\val.csv")
-data_test = pd.read_csv("C:\\Users\\Igor\\Desktop\\diplom\\summarizer\\data\\test.csv")
+data = pd.read_csv("C:\\Users\\Igor\\Desktop\\university\\diplom\\censorgram\\moderator\\data\\train.csv")
+data_eval = pd.read_csv("C:\\Users\\Igor\\Desktop\\university\\diplom\\censorgram\\moderator\\data\\val.csv")
+data_test = pd.read_csv("C:\\Users\\Igor\\Desktop\\university\\diplom\\censorgram\\moderator\\data\\test.csv")
 
 print(data.describe())
-# print(data.columns)
-# print(data.info)
 
 # приводим датасет в порядок
 # фильтрация по ограничениям
@@ -37,13 +32,6 @@ data_eval[label_name] = data_eval[label_name].apply(round)
 data_test[label_name] = data_test[label_name].apply(round)
 
 print(data.describe())
-# print(data.inappropriate.tolist())
-# print(data_test.text.tolist())
-# print(type(data_test.text.tolist()))
-# test_sentences = data_test.text.tolist()
-# print(test_sentences[0])
-# print(type(test_sentences[0]))
-# print(list(filter(lambda a: isinstance(a, str), test_sentences)))
 
 train_dataset = UnsafeDataset(tokenizer(data.text.tolist(),
                                         max_length=64,
@@ -79,8 +67,8 @@ training_args = TrainingArguments(
     output_dir='./unsafe/FINAL_VERS',  # output directory
     overwrite_output_dir=True,
     num_train_epochs=5,  # total # of training epochs
-    per_device_train_batch_size=8,  # batch size per device during training
-    per_device_eval_batch_size=8,  # batch size for evaluation
+    per_device_train_batch_size=32,  # batch size per device during training
+    per_device_eval_batch_size=32,  # batch size for evaluation
     warmup_steps=0,  # number of warmup steps for learning rate scheduler
     weight_decay=1e-8,  # strength of weight decay
     learning_rate=2e-5,
@@ -91,7 +79,6 @@ training_args = TrainingArguments(
     save_steps=2500,
     evaluation_strategy='steps', metric_for_best_model='f1', greater_is_better=True, load_best_model_at_end=True
 )
-
 trainer = Trainer(
     model=model,  # the instantiated 🤗 Transformers model to be trained
     args=training_args,  # training arguments, defined above
@@ -100,11 +87,8 @@ trainer = Trainer(
     tokenizer=tokenizer,
     compute_metrics=compute_metrics
 )
-
+trainer.compute_loss()
 trainer.add_callback(EarlyStoppingCallback(3))
-
-print(training_args.device)
-
 print(trainer.train())
 
 pred = trainer.predict(test_dataset)

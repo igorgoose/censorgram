@@ -1,14 +1,18 @@
 package by.schepov.bsu.diploma.censorgram.main.model.entity;
 
-import lombok.Data;
+import lombok.*;
 import lombok.experimental.Accessors;
+import org.hibernate.Hibernate;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.util.List;
+import java.util.Objects;
 
-@Data
+@Getter
+@Setter
+@ToString
+@RequiredArgsConstructor
 @Entity
 @Accessors(chain = true)
 @Table(name = "users")
@@ -29,4 +33,19 @@ public class User {
     @ManyToOne
     @JoinColumn(name = "status_id")
     private UserStatus status;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o)
+            return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o))
+            return false;
+        User user = (User) o;
+        return id != null && Objects.equals(id, user.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
+    }
 }

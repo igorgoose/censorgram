@@ -29,7 +29,7 @@ export default class PostService {
     }
 
     static async getById(id) {
-        return await axios.get(`https://jsonplaceholder.typicode.com/posts/${id}`);
+        return await axios.get([appConfig.api.serverUrl, '/v1/posts', `${id}`].join('/'));
     }
 
     static async getCommentsByPostId(id) {
